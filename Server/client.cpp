@@ -6,12 +6,11 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "client.h"
 
-#define MAX_SIZE 50
 
-int main()
-{
-    int sock_desc;
+void client::start() {
+
     struct sockaddr_in serv_addr;
     char sbuff[MAX_SIZE],rbuff[MAX_SIZE];
 
@@ -26,7 +25,7 @@ int main()
 
     if (connect(sock_desc, (struct sockaddr *) &serv_addr, sizeof (serv_addr)) < 0) {
         printf("Failed to connect to server\n");
-        return -1;
+        return;
     }
 
     printf("Connected successfully - Please enter string\n");
@@ -42,6 +41,9 @@ int main()
         bzero(rbuff,MAX_SIZE);//to clean buffer-->IMP otherwise previous word characters also came
     }
     close(sock_desc);
-    return 0;
+    return;
+}
 
+long client::Send(const char *msg) {
+    send(sock_desc, msg, strlen(msg), 0);
 }
